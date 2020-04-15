@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @Styles.Render("~/Content/bootstrap.min.css")
+
+
+    @Scripts.Render("~/Scripts/jquery-3.4.1.min.js")
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <img src="~/Img/bootstrap-solid.svg" alt="logo" style="width:40px;" />
+        </a>
+
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="~/Test/Tabla">Test</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Curso/TablaCursos">Curso</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Test/Jquery">Periodo</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Test/Jquery">Seccion</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Alumno/TablaAlumnos">Alumnos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Docente/TablaDocentes">Docente</a>
+            </li>
+
+
+        </ul>
+    </nav>
+
+
+    <div class="container">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.ToLongDateString().ToUpper() - UDEMY Application</p>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/Scripts/bootstrap.bundle.min.js")
+
+    <!--  Font Awesome -->
+    @Scripts.Render("~/Scripts/all.min.js")
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
