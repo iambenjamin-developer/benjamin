@@ -16,7 +16,7 @@ namespace BenjaminWebApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Producto", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Producto", action = "Tabla", id = UrlParameter.Optional }
             );
         }
     }

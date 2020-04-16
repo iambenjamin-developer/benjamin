@@ -23,49 +23,57 @@ namespace BenjaminWebApp.Models
 	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="dbExperiencias")]
-	public partial class DbExperienciasDataContext : System.Data.Linq.DataContext
+	public partial class dbExperienciasDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertProducto(Producto instance);
-    partial void UpdateProducto(Producto instance);
-    partial void DeleteProducto(Producto instance);
     partial void InsertRubro(Rubro instance);
     partial void UpdateRubro(Rubro instance);
     partial void DeleteRubro(Rubro instance);
+    partial void InsertProducto(Producto instance);
+    partial void UpdateProducto(Producto instance);
+    partial void DeleteProducto(Producto instance);
     #endregion
 		
-		public DbExperienciasDataContext() : 
+		public dbExperienciasDataContext() : 
 				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["dbExperienciasConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DbExperienciasDataContext(string connection) : 
+		public dbExperienciasDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DbExperienciasDataContext(System.Data.IDbConnection connection) : 
+		public dbExperienciasDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DbExperienciasDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public dbExperienciasDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DbExperienciasDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public dbExperienciasDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
+		}
+		
+		public System.Data.Linq.Table<Rubro> Rubros
+		{
+			get
+			{
+				return this.GetTable<Rubro>();
+			}
 		}
 		
 		public System.Data.Linq.Table<Producto> Productos
@@ -75,13 +83,119 @@ namespace BenjaminWebApp.Models
 				return this.GetTable<Producto>();
 			}
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rubros")]
+	public partial class Rubro : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		public System.Data.Linq.Table<Rubro> Rubros
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdRubro;
+		
+		private string _Descripcion;
+		
+		private EntitySet<Producto> _Productos;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdRubroChanging(int value);
+    partial void OnIdRubroChanged();
+    partial void OnDescripcionChanging(string value);
+    partial void OnDescripcionChanged();
+    #endregion
+		
+		public Rubro()
+		{
+			this._Productos = new EntitySet<Producto>(new Action<Producto>(this.attach_Productos), new Action<Producto>(this.detach_Productos));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdRubro", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdRubro
 		{
 			get
 			{
-				return this.GetTable<Rubro>();
+				return this._IdRubro;
 			}
+			set
+			{
+				if ((this._IdRubro != value))
+				{
+					this.OnIdRubroChanging(value);
+					this.SendPropertyChanging();
+					this._IdRubro = value;
+					this.SendPropertyChanged("IdRubro");
+					this.OnIdRubroChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="VarChar(100)")]
+		public string Descripcion
+		{
+			get
+			{
+				return this._Descripcion;
+			}
+			set
+			{
+				if ((this._Descripcion != value))
+				{
+					this.OnDescripcionChanging(value);
+					this.SendPropertyChanging();
+					this._Descripcion = value;
+					this.SendPropertyChanged("Descripcion");
+					this.OnDescripcionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rubro_Producto", Storage="_Productos", ThisKey="IdRubro", OtherKey="IdRubro")]
+		public EntitySet<Producto> Productos
+		{
+			get
+			{
+				return this._Productos;
+			}
+			set
+			{
+				this._Productos.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Productos(Producto entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rubro = this;
+		}
+		
+		private void detach_Productos(Producto entity)
+		{
+			this.SendPropertyChanging();
+			entity.Rubro = null;
 		}
 	}
 	
@@ -102,6 +216,8 @@ namespace BenjaminWebApp.Models
 		private System.Nullable<decimal> _Precio;
 		
 		private System.Nullable<int> _Cantidad;
+		
+		private System.Nullable<System.DateTime> _FechaAlta;
 		
 		private System.Nullable<System.DateTime> _FechaVencimiento;
 		
@@ -129,6 +245,8 @@ namespace BenjaminWebApp.Models
     partial void OnPrecioChanged();
     partial void OnCantidadChanging(System.Nullable<int> value);
     partial void OnCantidadChanged();
+    partial void OnFechaAltaChanging(System.Nullable<System.DateTime> value);
+    partial void OnFechaAltaChanged();
     partial void OnFechaVencimientoChanging(System.Nullable<System.DateTime> value);
     partial void OnFechaVencimientoChanged();
     partial void OnIdRubroChanging(System.Nullable<int> value);
@@ -261,6 +379,26 @@ namespace BenjaminWebApp.Models
 					this._Cantidad = value;
 					this.SendPropertyChanged("Cantidad");
 					this.OnCantidadChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaAlta", DbType="DateTime")]
+		public System.Nullable<System.DateTime> FechaAlta
+		{
+			get
+			{
+				return this._FechaAlta;
+			}
+			set
+			{
+				if ((this._FechaAlta != value))
+				{
+					this.OnFechaAltaChanging(value);
+					this.SendPropertyChanging();
+					this._FechaAlta = value;
+					this.SendPropertyChanged("FechaAlta");
+					this.OnFechaAltaChanged();
 				}
 			}
 		}
@@ -401,120 +539,6 @@ namespace BenjaminWebApp.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rubros")]
-	public partial class Rubro : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IdRubro;
-		
-		private string _Descripcion;
-		
-		private EntitySet<Producto> _Productos;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdRubroChanging(int value);
-    partial void OnIdRubroChanged();
-    partial void OnDescripcionChanging(string value);
-    partial void OnDescripcionChanged();
-    #endregion
-		
-		public Rubro()
-		{
-			this._Productos = new EntitySet<Producto>(new Action<Producto>(this.attach_Productos), new Action<Producto>(this.detach_Productos));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdRubro", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int IdRubro
-		{
-			get
-			{
-				return this._IdRubro;
-			}
-			set
-			{
-				if ((this._IdRubro != value))
-				{
-					this.OnIdRubroChanging(value);
-					this.SendPropertyChanging();
-					this._IdRubro = value;
-					this.SendPropertyChanged("IdRubro");
-					this.OnIdRubroChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="VarChar(100)")]
-		public string Descripcion
-		{
-			get
-			{
-				return this._Descripcion;
-			}
-			set
-			{
-				if ((this._Descripcion != value))
-				{
-					this.OnDescripcionChanging(value);
-					this.SendPropertyChanging();
-					this._Descripcion = value;
-					this.SendPropertyChanged("Descripcion");
-					this.OnDescripcionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Rubro_Producto", Storage="_Productos", ThisKey="IdRubro", OtherKey="IdRubro")]
-		public EntitySet<Producto> Productos
-		{
-			get
-			{
-				return this._Productos;
-			}
-			set
-			{
-				this._Productos.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Productos(Producto entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rubro = this;
-		}
-		
-		private void detach_Productos(Producto entity)
-		{
-			this.SendPropertyChanging();
-			entity.Rubro = null;
 		}
 	}
 }

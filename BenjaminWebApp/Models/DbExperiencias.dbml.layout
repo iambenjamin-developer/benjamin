@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DbExperiencias">
-  <DataContextMoniker Name="/DbExperienciasDataContext" />
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="dbExperiencias">
+  <DataContextMoniker Name="/dbExperienciasDataContext" />
   <nestedChildShapes>
-    <classShape Id="0832f083-89a8-4e68-8bd7-952de6424496" absoluteBounds="3.5, 1, 2, 2.7324039713541666">
-      <DataClassMoniker Name="/DbExperienciasDataContext/Producto" />
+    <classShape Id="9e98be28-679b-4b29-8b00-82141508d598" absoluteBounds="0.75, 1.875, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/dbExperienciasDataContext/Rubro" />
       <nestedChildShapes>
-        <elementListCompartment Id="0945e06e-089d-420e-b8fa-65eb0739a7b9" absoluteBounds="3.515, 1.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d41111e1-4e76-4fea-821d-30346692bd37" absoluteBounds="0.765, 2.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="720c371f-8267-4756-adf2-6c103c872cb3" absoluteBounds="0.75, 1.75, 2, 1.1939925130208335">
-      <DataClassMoniker Name="/DbExperienciasDataContext/Rubro" />
+    <classShape Id="097af3c8-dc2f-4cda-bfc5-d36680b771a2" absoluteBounds="3.5, 1, 2, 2.9247054036458326">
+      <DataClassMoniker Name="/dbExperienciasDataContext/Producto" />
       <nestedChildShapes>
-        <elementListCompartment Id="98b07d9d-1b62-451c-88e6-3670663f59c0" absoluteBounds="0.765, 2.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f530f7d1-eedd-4bd5-a0af-a3ea29e09362" absoluteBounds="3.515, 1.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 2.34699625651042); (3.5 : 2.34699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DbExperienciasDataContext/Rubro/Rubro_Producto" />
+    <associationConnector edgePoints="[(2.75 : 2.47199625651042); (3.5 : 2.47199625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbExperienciasDataContext/Rubro/Rubro_Producto" />
       <nodes>
-        <classShapeMoniker Id="720c371f-8267-4756-adf2-6c103c872cb3" />
-        <classShapeMoniker Id="0832f083-89a8-4e68-8bd7-952de6424496" />
+        <classShapeMoniker Id="9e98be28-679b-4b29-8b00-82141508d598" />
+        <classShapeMoniker Id="097af3c8-dc2f-4cda-bfc5-d36680b771a2" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

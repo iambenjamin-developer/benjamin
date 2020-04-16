@@ -155,6 +155,11 @@ function llenarTabla(arrayCabecera, data, idTagString) {
 
 
 }
+
+
+
+
+
 function llenarComboBox(data, idTagString) {
 
     //string q representa las etiquetas html
