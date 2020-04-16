@@ -1,20 +1,34 @@
 ﻿//Iniciamos todos los componentes por defecto para que funcionen las tablas
 inicializar();
 
-
-
 function inicializar() {
     //setear parametros por defecto datepickers
-    setearConfiguraciones();
+    configuracionDatePicker();
 
-    //cargar load de componentes
-    iniciarlizarComponentes();
+    //rellenarComboBox Filtro("Controlador", "Json_Accion","idTag")
+    rellenarComboBox("Producto", "DatosComboBox", "combobox-data");
 
 
-    
+    //rellenarComboBox PopUp("Controlador", "Json_Accion","idTag")
+    rellenarComboBox("Producto", "DatosComboBox", "cboIdRubro");
+
+
+    //CABECERA DE LA TABLA
+    var arrayCabecera = ["ID", "NOMBRE", "DESCRIPCION", "PRECIO", "CANTIDAD", "FECHA DE VENCIMIENTO",
+        "CATEGORIA", "ACTIVO", "ACCIONES"];
+    //rellenarTabla("Controlador", "Json_Accion","idTag", arrayCabeceraString)
+    rellenarTabla("Producto", "DatosTabla", "tabla-data", arrayCabecera);
+
+    $('#dtpFechaVencimiento').datepicker();
+
+
+
 
 }
-function setearConfiguraciones() {
+
+
+//CONFIGURACIONES
+function configuracionDatePicker() {
 
     $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -39,32 +53,57 @@ function setearConfiguraciones() {
     };
 
     $.datepicker.setDefaults($.datepicker.regional['es']);
-
-
-    moment.locale("es");
-
-}
-function iniciarlizarComponentes() {
-
-    //rellenarComboBox Filtro("Controlador", "Json_Accion","idTag")
-    rellenarComboBox("Producto", "DatosComboBox", "combobox-data");
-
-
-    //rellenarComboBox PopUp("Controlador", "Json_Accion","idTag")
-    rellenarComboBox("Producto", "DatosComboBox", "cboIdRubro");
-
-
-    //CABECERA DE LA TABLA
-    var arrayCabecera = ["ID", "NOMBRE", "DESCRIPCION", "PRECIO", "CANTIDAD", "FECHA DE VENCIMIENTO",
-        "CATEGORIA", "ACTIVO", "ACCIONES"];
-    //rellenarTabla("Controlador", "Json_Accion","idTag", arrayCabeceraString)
-    rellenarTabla("Producto", "DatosTabla", "tabla-data", arrayCabecera);
-
-    $('#dtpFechaVencimiento').datepicker();
-
 }
 
+function parsearBoolean(booleano) {
 
+    if (booleano == true) {
+        return "SI";
+    } else { return "NO"; }
+};
+
+function parsearMoneda(decimal) {
+
+    return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
+};
+
+function parsearFecha(fecha) {
+
+
+    if (fecha != null) {
+
+        moment.locale("es");
+
+        return moment(fecha).format('L');
+
+    } else {
+
+        return "No Aplica";
+    }
+
+
+};
+
+
+function parsearFechaNullVacio(fecha) {
+
+
+    if (fecha != null) {
+
+        moment.locale("es");
+
+        return moment(fecha).format('L');
+
+    } else {
+
+        return "";
+    }
+
+
+};
+
+
+//RELLENAR COMPONENTES
 function rellenarComboBox(controlador, jsonAccion, stringID) {
 
     var ruta = "/";
@@ -91,7 +130,6 @@ function rellenarComboBox(controlador, jsonAccion, stringID) {
     });
 
 }
-
 
 function rellenarTabla(controlador, jsonAccion, idTag, arrayCabecera) {
 
@@ -208,12 +246,11 @@ function rellenarTabla(controlador, jsonAccion, idTag, arrayCabecera) {
 
 }
 
-
 function formatearDato(dato, nroFila, nroColumna) {
-    
-    console.log("Fila Nº: " + nroFila);
-    console.log("Columna Nº: " + nroColumna);
-    console.log(dato);
+
+    //console.log("Fila Nº: " + nroFila);
+    //console.log("Columna Nº: " + nroColumna);
+    //console.log(dato);
 
     //buscar la columna con campo fecha
     if (nroColumna == 5) {
@@ -236,72 +273,60 @@ function formatearDato(dato, nroFila, nroColumna) {
     return dato;
 }
 
-function parsearBoolean(booleano) {
 
-    if (booleano == true) {
-        return "SI";
-    } else { return "NO"; }
-};
+function abrirModal(id) {
 
-function parsearMoneda(decimal) {
+    //Si el ID es cero usamos el modal para agregar
+    if (id == 0) {
 
-    return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
-};
+        limpiarDatos();
 
-function parsearFecha(fecha) {
+    }//Si el ID distinto de cero usamos el modal para editar
+    else {
 
-
-    if (fecha != null) {
-
-        moment.locale("es");
-
-        return moment(fecha).format('L');
-
-    } else {
-
-        return "No Aplica"
+        obtenerRegistro("Producto", "RegistroSeleccionado", id);
     }
 
 
-};
 
+}
 
+function obtenerRegistro(controlador, jsonAccion, id) {
 
-
-function abrirModal(controlador, jsonAccion, id) {
-
-    //ruta -= /Controlador/Accion/?id=parametro
+    //ruta = /Controlador/Accion/?id=parametro
     var ruta = "/";
     ruta += controlador + "/";
     ruta += jsonAccion + "/";
     ruta += "?id=" + id;
 
+    console.log(ruta);
 
-    if (id == 0) {
-        //si es cero vamos a agregar datos
-        limpiarDatos();
+    $.get(ruta, function (data) {
 
-    } else { //si es distinto de cero vamos a agregar datos
+        /*
+        console.log(JSON.stringify(data));
+        console.log(data.IdProducto);
+        console.log(data.Nombre);
+        console.log(data.Descripcion);
+        console.log(data.Precio);
+        console.log(data.Cantidad);
+        console.log(data.FechaVencimiento);
+        console.log(data.IdRubro * 1);
+        console.log(data.Categoria);
+        console.log(data.Foto);
+        */
 
-        $.get(ruta, function (data) {
+        document.getElementById("txtIdProducto").value = data.IdProducto;
+        document.getElementById("txtNombre").value = data.Nombre;
+        document.getElementById("txtDescripcion").value = data.Descripcion;
+        document.getElementById("txtPrecio").value = data.Precio;
+        document.getElementById("txtCantidad").value = data.Cantidad;
+        document.getElementById("dtpFechaVencimiento").value = parsearFechaNullVacio(data.FechaVencimiento);
+        document.getElementById("cboIdRubro").value = data.IdRubro;
+        document.getElementById("txtCategoria").value = data.Categoria;
+        document.getElementById("imgFoto").value = data.Foto;
 
-
-            document.getElementById("txtIdDocente").value = data[0].IIDDOCENTE;
-            document.getElementById("txtNombre").value = data[0].NOMBRE;
-            document.getElementById("txtApellidoPaterno").value = data[0].APPATERNO;
-            document.getElementById("txtApellidoMaterno").value = data[0].APMATERNO;
-            document.getElementById("txtDireccion").value = data[0].DIRECCION;
-            document.getElementById("txtTelefonoFijo").value = data[0].TELEFONOFIJO;
-            document.getElementById("txtTelefonoCelular").value = data[0].TELEFONOCELULAR;
-            document.getElementById("txtEmail").value = data[0].EMAIL;
-            document.getElementById("cboSexoPopUp").value = data[0].IIDSEXO;
-            document.getElementById("dtpFechaContrato").value = data[0].FECHA_CONTRATO;
-            document.getElementById("cboModalidadContratoPopUp").value = data[0].IIDMODALIDADCONTRATO;
-            document.getElementById("imgFoto").value = data[0].FOTO;
-
-
-        });
-    }
+    });
 }
 
 function limpiarDatos() {
