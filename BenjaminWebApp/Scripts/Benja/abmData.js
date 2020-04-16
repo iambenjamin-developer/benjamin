@@ -56,7 +56,7 @@ function iniciarlizarComponentes() {
 
     //CABECERA DE LA TABLA
     var arrayCabecera = ["ID", "NOMBRE", "DESCRIPCION", "PRECIO", "CANTIDAD", "FECHA DE VENCIMIENTO",
-        "CATEGORIA", "ACCIONES"];
+        "CATEGORIA", "ACTIVO", "ACCIONES"];
     //rellenarTabla("Controlador", "Json_Accion","idTag", arrayCabeceraString)
     rellenarTabla("Producto", "DatosTabla", "tabla-data", arrayCabecera);
 
@@ -218,18 +218,56 @@ function formatearDato(dato, nroFila, nroColumna) {
     //buscar la columna con campo fecha
     if (nroColumna == 5) {
 
-        if (dato == null) {
-            //Si la fecha es nula devolver la cadena No Aplica
-            return "No aplica";
-        } else {
+        return parsearFecha(dato);
+    }
 
-           return moment(dato).format('L');
-        }
-        
+    //buscar la columna con campo moneda
+    if (nroColumna == 3) {
+
+        return parsearMoneda(dato);
+    }
+
+    //buscar la columna con campo booleano
+    if (nroColumna == 7) {
+
+        return parsearBoolean(dato);
     }
 
     return dato;
 }
+
+function parsearBoolean(booleano) {
+
+    if (booleano == true) {
+        return "SI";
+    } else { return "NO"; }
+};
+
+function parsearMoneda(decimal) {
+
+    return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
+};
+
+function parsearFecha(fecha) {
+
+
+    if (fecha != null) {
+
+        moment.locale("es");
+
+        return moment(fecha).format('L');
+
+    } else {
+
+        return "No Aplica"
+    }
+
+
+};
+
+
+
+
 function abrirModal(controlador, jsonAccion, id) {
 
     //ruta -= /Controlador/Accion/?id=parametro

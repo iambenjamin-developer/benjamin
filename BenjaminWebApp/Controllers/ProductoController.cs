@@ -34,6 +34,7 @@ namespace BenjaminWebApp.Controllers
                     columna.Cantidad,
                     columna.FechaVencimiento,
                     columna.Categoria,
+                    columna.Activo
 
 
 
