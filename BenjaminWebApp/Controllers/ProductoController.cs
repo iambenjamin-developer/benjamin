@@ -41,7 +41,7 @@ namespace BenjaminWebApp.Controllers
 
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
-              
+
         public ActionResult Tabla()
         {
             return View();
@@ -68,6 +68,93 @@ namespace BenjaminWebApp.Controllers
 
 
                 }).First();
+
+            return Json(lista, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public int AgregarEditar(Models.Producto obj)
+        {
+
+            int nroRegistrosAfectados = 0;
+
+            try
+            {
+                //si el ID es cero agregar objeto
+                if (obj.IdProducto == 0)
+                {
+
+                    db.Productos.InsertOnSubmit(obj);
+                    db.SubmitChanges();
+
+                    nroRegistrosAfectados = 1;
+
+
+                }//si el ID es distinto de cero editar entidad
+                else
+                {
+
+                    Models.Producto objUpdate = db.Productos
+                        .Where(parametro => parametro.IdProducto.Equals(obj.IdProducto)).First();
+
+                    objUpdate.Nombre = obj.Nombre;
+                    objUpdate.Descripcion = obj.Descripcion;
+                    objUpdate.Foto = obj.Foto;
+                    objUpdate.Precio = obj.Precio;
+                    objUpdate.Cantidad = obj.Cantidad;
+                    objUpdate.FechaAlta = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    objUpdate.FechaVencimiento = obj.FechaVencimiento;
+                    objUpdate.IdRubro = obj.IdRubro;
+                    objUpdate.Categoria = obj.Categoria;
+
+                    db.SubmitChanges();
+                    nroRegistrosAfectados = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                nroRegistrosAfectados = 0;
+                throw;
+            }
+
+            return nroRegistrosAfectados;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public JsonResult Editar(int id)
+        {
+
+            var lista = (from prod in db.Productos
+                         where prod.IdProducto.Equals(id)
+                         select new
+                         {
+                             prod.IdProducto,
+                             prod.Nombre,
+                             prod.Descripcion,
+                             prod.Foto,
+                             prod.Precio,
+                             prod.Cantidad,
+                             prod.FechaAlta,
+                             prod.FechaVencimiento,
+                             prod.IdRubro,
+                             prod.Categoria,
+                             prod.Activo
+
+                         }).First();
 
             return Json(lista, JsonRequestBehavior.AllowGet);
         }

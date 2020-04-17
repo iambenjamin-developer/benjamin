@@ -3,17 +3,14 @@
     ViewBag.Title = "Tabla";
 }
 
+<h2>Rubros</h2>
+
+
 @*CSS REFERENCIAS*@
 <link href="~/Content/datatables.min.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
 
-
-<h2>Productos</h2>
-
-@*COMBOBOX*@
-<label>Filtrar: </label>
-<select id="combobox-data"></select>
 
 <br />
 <!-- Button trigger modal -->
@@ -40,13 +37,7 @@
 
                     <tr>
                         <td>ID</td>
-                        <td><input type="text" id="txtIdProducto" readonly class="limpiar" /><label id="lbltxtIdProducto"></label></td>
-                    </tr>
-
-                    <tr>
-                        <td>NOMBRE</td>
-                        <td><input type="text" id="txtNombre" class="limpiar obligatorio" /><label id="lbltxtNombre"></label></td>
-
+                        <td><input type="text" id="txtIdRubro" readonly class="limpiar" /><label id="lbltxtIdRubro"></label></td>
                     </tr>
 
                     <tr>
@@ -55,39 +46,6 @@
 
                     </tr>
 
-                    <tr>
-                        <td>PRECIO ($)</td>
-                        <td><input type="text" id="txtPrecio" class="limpiar obligatorio" /><label id="lbltxtPrecio"></label></td>
-
-                    </tr>
-
-                    <tr>
-                        <td>CANTIDAD</td>
-                        <td><input type="number" id="txtCantidad" class="limpiar obligatorio" /><label id="lbltxtCantidad"></label></td>
-                    </tr>
-
-                    <tr>
-                        <td>FECHA DE VENCIMIENTO</td>
-                        <td><input type="text" id="dtpFechaVencimiento" class="limpiar obligatorio" /><label id="lbldtpFechaVencimiento"></label></td>
-                    </tr>
-
-
-                    <tr>
-                        <td>RUBRO</td>
-                        <td><select id="cboIdRubro" class="limpiarCbo obligatorio"></select><label id="lblcboIdRubro"></label></td>
-                    </tr>
-
-                    <tr>
-                        <td>CATEGORIA</td>
-                        <td><input type="text" id="txtCategoria" class="limpiar obligatorio" /><label id="lbltxtCategoria"></label></td>
-                    </tr>
-
-                 
-                    <tr>
-                        <td>FOTO</td>
-                        <td> <img id="imgFoto" width="100" height="100" style="border:1px solid" /><label id="lblimgFoto"></label></td>
-
-                    </tr>
 
                 </table>
 
@@ -108,4 +66,5 @@
 <script src="~/Scripts/jquery-ui.min.js"></script>
 <script src="~/Scripts/moment.min.js"></script>
 <script src="~/Scripts/moment-with-locales.min.js"></script>
-<script src="~/Scripts/Benja/abmData.js"></script>
+<script src="~/Scripts/Benja/rubrosScript.js"></script>
+

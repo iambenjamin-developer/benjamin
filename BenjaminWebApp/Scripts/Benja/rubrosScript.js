@@ -2,39 +2,16 @@
 inicializar();
 
 function inicializar() {
-    //setear parametros por defecto datepickers
-    configuracionDatePicker();
-
-    //rellenarComboBox Filtro("Controlador", "Json_Accion","idTag")
-    rellenarComboBox("Producto", "DatosComboBox", "combobox-data");
-
-
-    //rellenarComboBox PopUp("Controlador", "Json_Accion","idTag")
-    rellenarComboBox("Producto", "DatosComboBox", "cboIdRubro");
-
-    /*
-    //CABECERA DE LA TABLA
-    var arrayCabecera = ["ID", "NOMBRE", "DESCRIPCION", "PRECIO", "CANTIDAD", "FECHA DE VENCIMIENTO",
-        "CATEGORIA", "ACTIVO", "ACCIONES"];
-    //rellenarTabla("Controlador", "Json_Accion","idTag", arrayCabeceraString)
-    rellenarTabla("Producto", "DatosTabla", "tabla-data", arrayCabecera);
-    */
 
     mostrarTabla();
-
-    $('#dtpFechaVencimiento').datepicker();
-
-
-
 
 }
 
 function mostrarTabla() {
     //CABECERA DE LA TABLA
-    var arrayCabecera = ["ID", "NOMBRE", "DESCRIPCION", "PRECIO", "CANTIDAD", "FECHA DE VENCIMIENTO",
-        "CATEGORIA", "ACTIVO", "ACCIONES"];
+    var arrayCabecera = ["ID", "DESCRIPCION", "ACCIONES"];
     //rellenarTabla("Controlador", "Json_Accion","idTag", arrayCabeceraString)
-    rellenarTabla("Producto", "DatosTabla", "tabla-data", arrayCabecera);
+    rellenarTabla("Rubro", "Datos", "tabla-data", arrayCabecera);
 }
 
 
@@ -258,7 +235,7 @@ function rellenarTabla(controlador, jsonAccion, idTag, arrayCabecera) {
 }
 
 function formatearDato(dato, nroFila, nroColumna) {
-
+    /*
     //console.log("Fila Nº: " + nroFila);
     //console.log("Columna Nº: " + nroColumna);
     //console.log(dato);
@@ -280,12 +257,15 @@ function formatearDato(dato, nroFila, nroColumna) {
 
         return parsearBoolean(dato);
     }
-
+    */
     return dato;
+
 }
 
 
 function abrirModal(id) {
+
+
 
     //Si el ID es cero usamos el modal para agregar
     if (id == 0) {
@@ -295,7 +275,7 @@ function abrirModal(id) {
     }//Si el ID distinto de cero usamos el modal para editar
     else {
 
-        obtenerRegistro("Producto", "RegistroSeleccionado", id);
+        obtenerRegistro("Rubro", "RegistroSeleccionado", id);
     }
 
 
@@ -310,32 +290,12 @@ function obtenerRegistro(controlador, jsonAccion, id) {
     ruta += jsonAccion + "/";
     ruta += "?id=" + id;
 
-    console.log(ruta);
+   
 
     $.get(ruta, function (data) {
 
-        /*
-        console.log(JSON.stringify(data));
-        console.log(data.IdProducto);
-        console.log(data.Nombre);
-        console.log(data.Descripcion);
-        console.log(data.Precio);
-        console.log(data.Cantidad);
-        console.log(data.FechaVencimiento);
-        console.log(data.IdRubro * 1);
-        console.log(data.Categoria);
-        console.log(data.Foto);
-        */
-
-        document.getElementById("txtIdProducto").value = data.IdProducto;
-        document.getElementById("txtNombre").value = data.Nombre;
+        document.getElementById("txtIdRubro").value = data.IdRubro;
         document.getElementById("txtDescripcion").value = data.Descripcion;
-        document.getElementById("txtPrecio").value = data.Precio;
-        document.getElementById("txtCantidad").value = data.Cantidad;
-        document.getElementById("dtpFechaVencimiento").value = parsearFechaNullVacio(data.FechaVencimiento);
-        document.getElementById("cboIdRubro").value = data.IdRubro;
-        document.getElementById("txtCategoria").value = data.Categoria;
-        document.getElementById("imgFoto").value = data.Foto;
 
     });
 }
@@ -417,48 +377,26 @@ function agregarEditar() {
         var frm = new FormData();
 
         //colocar en una variable el valor de cada elemento
-        var idProducto = document.getElementById("txtIdProducto").value;
-        var nombre = document.getElementById("txtNombre").value;
+        var idRubro = document.getElementById("txtIdRubro").value;
         var descripcion = document.getElementById("txtDescripcion").value;
-        var precio = document.getElementById("txtPrecio").value.replace(".", ",");
-        var cantidad = document.getElementById("txtCantidad").value;
-        var fechaAlta = moment(Date.now()).format('L'); ;
-        var fechaVencimiento = document.getElementById("dtpFechaVencimiento").value;
-        var idRubro = document.getElementById("cboIdRubro").value;
-        var categoria = document.getElementById("txtCategoria").value;
-        var foto = document.getElementById("imgFoto").value;
+      
 
         //relacionar el valor de cada elemento con la clase que le corresponde
-        frm.append("IdProducto", idProducto);
-        frm.append("Nombre", nombre);
-        frm.append("Descripcion", descripcion);
-        frm.append("Precio", precio);
-        frm.append("Cantidad", cantidad);
-        frm.append("FechaAlta", fechaAlta);
-        frm.append("FechaVencimiento", fechaVencimiento);
         frm.append("IdRubro", idRubro);
-        frm.append("Categoria", categoria);
-        frm.append("Foto", null);
-        frm.append("Activo", true);
+        frm.append("Descripcion", descripcion);
+        
 
-        console.log(idProducto);
-        console.log(nombre);
-        console.log(descripcion);
-        console.log(precio);
-        console.log(cantidad);
-        console.log(fechaAlta);
-        console.log(fechaVencimiento);
-        console.log(idRubro);
-        console.log(categoria);
-        console.log(foto);
+        //console.log(idRubro);
 
+        //console.log(descripcion);
+       
 
 
         if (confirm("¿Desea Confirmar Guardar?") == 1) {
 
             $.ajax({
                 type: "POST",
-                url: "/Producto/AgregarEditar/",
+                url: "/Rubro/AgregarEditar/",
                 data: frm,
                 contentType: false,
                 processData: false,
@@ -494,14 +432,14 @@ function eliminar(id) {
 
     var frm = new FormData();
 
-    frm.append("IIDCURSO", id);
+    frm.append("IdRubro", id);
 
 
     if (confirm("¿Seguro que quiere eliminar el registro??") == 1) {
 
         $.ajax({
             type: "POST",
-            url: "/Curso/Eliminar/",
+            url: "/Rubro/Eliminar/",
             data: frm,
             contentType: false,
             processData: false,

@@ -122,6 +122,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
+    <Compile Include="Controllers\RubroController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -160,13 +161,16 @@
     <Content Include="Scripts\Benja\abmData.js" />
     <Content Include="Scripts\Benja\docenteScript.js" />
     <Content Include="Scripts\Benja\llenarTagsHtml.js" />
+    <Content Include="Scripts\Benja\rubrosScript.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\datepickers.js" />
+    <Content Include="Scripts\es.min.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\numeral.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -198,6 +202,7 @@
       <DependentUpon>dbExperiencias.dbml</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <Content Include="Views\Rubro\Tabla.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
