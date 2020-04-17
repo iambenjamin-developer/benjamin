@@ -335,7 +335,7 @@ function obtenerRegistro(controlador, jsonAccion, id) {
         document.getElementById("dtpFechaVencimiento").value = parsearFechaNullVacio(data.FechaVencimiento);
         document.getElementById("cboIdRubro").value = data.IdRubro;
         document.getElementById("txtCategoria").value = data.Categoria;
-        document.getElementById("imgFoto").value = data.Foto;
+        document.getElementById("imgFoto").src = "data:image/png;base64," + data.FOTOMOSTRAR;
 
     });
 }
@@ -344,6 +344,8 @@ function limpiarDatos() {
 
     limpiarTextBoxes();
     limpiarComboBoxes();
+
+    document.getElementById("imgFoto").value = null;
 }
 
 function limpiarTextBoxes() {
@@ -426,7 +428,10 @@ function agregarEditar() {
         var fechaVencimiento = document.getElementById("dtpFechaVencimiento").value;
         var idRubro = document.getElementById("cboIdRubro").value;
         var categoria = document.getElementById("txtCategoria").value;
-        var foto = document.getElementById("imgFoto").value;
+        var foto = document.getElementById("imgFoto").src.replace("data:image/png;base64,", "");
+
+
+  
 
         //relacionar el valor de cada elemento con la clase que le corresponde
         frm.append("IdProducto", idProducto);
@@ -438,7 +443,7 @@ function agregarEditar() {
         frm.append("FechaVencimiento", fechaVencimiento);
         frm.append("IdRubro", idRubro);
         frm.append("Categoria", categoria);
-        frm.append("Foto", null);
+        frm.append("cadenaFoto", foto);
         frm.append("Activo", true);
 
         console.log(idProducto);
@@ -458,7 +463,7 @@ function agregarEditar() {
 
             $.ajax({
                 type: "POST",
-                url: "/Producto/AgregarEditar/",
+                url: "/Producto/AgregarEditarConFoto/",
                 data: frm,
                 contentType: false,
                 processData: false,
@@ -473,6 +478,7 @@ function agregarEditar() {
                             alert("Editado Exitosamente");
 
                         document.getElementById("btnCancelar").click();
+
 
                     } else {
                         alert("Error agregarEditar()");
@@ -494,7 +500,6 @@ function agregarEditar() {
 
 function eliminar(id) {
 
-    
     var frm = new FormData();
 
     frm.append("IdProducto", id);
@@ -513,7 +518,7 @@ function eliminar(id) {
 
                     mostrarTabla();
 
-                  alert("Registro eliminado!");
+                    alert("Registro eliminado!");
 
                     document.getElementById("btnCancelar").click();
                 } else {
@@ -547,11 +552,12 @@ function inactivar(id) {
             success: function (data) {
                 if (data != 0) {
 
-                    mostrarTabla();
-
                     alert("Registro Inactivo!");
 
+                    mostrarTabla();
+
                     document.getElementById("btnCancelar").click();
+
                 } else {
                     alert("Error");
                 }
@@ -563,3 +569,58 @@ function inactivar(id) {
     } //fin confirmacion
 }
 
+function eliminarGet(id) {
+
+
+
+    if (confirm("Esta seguro de eliminar registro?(GET)") == 1) {
+
+
+        $.get("/Producto/InactivarGet/?id=" + id, function (data) {
+
+            if (data == 0) {
+
+                alert("Ocurrió un error eliminarGet(id)");
+            } else {
+
+                alert("Se inactivó correctamente");
+                mostrarTabla();
+
+                document.getElementById("btnCancelar").click();
+            }
+
+
+        });
+    }
+
+}
+
+
+
+
+var btnFoto = document.getElementById("btnFoto");
+
+btnFoto.onchange = function (e) {
+
+    //capturamos el
+    var file = document.getElementById("btnFoto").files[0];
+
+    var reader = new FileReader();
+
+    if (reader != null) {
+
+        reader.onloadend = function () {
+
+            var img = document.getElementById("imgFoto");
+
+            img.src = reader.result;
+
+            //se muestra el  archivo en base de 64 bits
+            //alert(reader.result);
+        }
+    }
+
+
+    reader.readAsDataURL(file);
+
+}

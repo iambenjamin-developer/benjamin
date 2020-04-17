@@ -157,6 +157,7 @@
     <Content Include="Global.asax" />
     <Content Include="Img\bootstrap-solid.svg" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Models\Consultas.sql" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Benja\abmData.js" />
     <Content Include="Scripts\Benja\docenteScript.js" />

@@ -62,12 +62,13 @@ namespace BenjaminWebApp.Controllers
                     columna.Cantidad,
                     columna.FechaVencimiento,
                     columna.IdRubro,
-                    columna.Categoria,
-                    columna.Foto
+                    FOTOMOSTRAR = Convert.ToBase64String(columna.Foto.ToArray()),
+                    columna.Categoria
 
 
 
-                }).First();
+
+                }).FirstOrDefault();
 
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
@@ -119,6 +120,55 @@ namespace BenjaminWebApp.Controllers
             return nroRegistrosAfectados;
         }
 
+        public int AgregarEditarConFoto(Models.Producto obj, string cadenaFoto)
+        {
+
+            int nroRegistrosAfectados = 0;
+
+            try
+            {
+                //si el ID es cero agregar objeto
+                if (obj.IdProducto == 0)
+                {
+                    obj.Foto = Convert.FromBase64String(cadenaFoto);
+                    db.Productos.InsertOnSubmit(obj);
+                    db.SubmitChanges();
+
+                    nroRegistrosAfectados = 1;
+
+
+                }//si el ID es distinto de cero editar entidad
+                else
+                {
+
+                    Models.Producto objUpdate = db.Productos
+                        .Where(parametro => parametro.IdProducto.Equals(obj.IdProducto)).First();
+
+                    objUpdate.Nombre = obj.Nombre;
+                    objUpdate.Descripcion = obj.Descripcion;
+                    objUpdate.Foto = Convert.FromBase64String(cadenaFoto);
+                    objUpdate.Precio = obj.Precio;
+                    objUpdate.Cantidad = obj.Cantidad;
+                    // objUpdate.FechaAlta = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    objUpdate.FechaVencimiento = obj.FechaVencimiento;
+                    objUpdate.IdRubro = obj.IdRubro;
+                    objUpdate.Categoria = obj.Categoria;
+
+                    db.SubmitChanges();
+                    nroRegistrosAfectados = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                nroRegistrosAfectados = 0;
+                throw;
+            }
+
+            return nroRegistrosAfectados;
+        }
+
+
+
         public int Inactivar(Models.Producto obj)
         {
 
@@ -133,7 +183,7 @@ namespace BenjaminWebApp.Controllers
                     .Where(parametro => parametro.IdProducto.Equals(obj.IdProducto)).First();
 
                 objUpdate.Activo = false;
-              
+
 
                 db.SubmitChanges();
                 nroRegistrosAfectados = 1;
@@ -175,7 +225,57 @@ namespace BenjaminWebApp.Controllers
         }
 
 
+        public int EliminarGet(int id)
+        {
 
+            int nroRegistrosAfectados = 0;
+
+            try
+            {
+
+                var objEliminar = db.Productos.Where(parametro => parametro.IdProducto.Equals(id)).First();
+
+                db.Productos.DeleteOnSubmit(objEliminar);
+                db.SubmitChanges();
+
+                nroRegistrosAfectados = 1;
+            }
+            catch (Exception ex)
+            {
+
+                nroRegistrosAfectados = 0;
+            }
+
+
+            return nroRegistrosAfectados;
+        }
+
+        public int InactivarGet(int id)
+        {
+
+            int nroRegistrosAfectados = 0;
+
+            try
+            {
+
+                Models.Producto objUpdate = db.Productos
+                    .Where(parametro => parametro.IdProducto.Equals(id)).First();
+
+                objUpdate.Activo = false;
+
+
+                db.SubmitChanges();
+                nroRegistrosAfectados = 1;
+
+            }
+            catch (Exception ex)
+            {
+                nroRegistrosAfectados = 0;
+                throw;
+            }
+
+            return nroRegistrosAfectados;
+        }
 
 
 
