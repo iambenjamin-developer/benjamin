@@ -422,7 +422,7 @@ function agregarEditar() {
         var descripcion = document.getElementById("txtDescripcion").value;
         var precio = document.getElementById("txtPrecio").value.replace(".", ",");
         var cantidad = document.getElementById("txtCantidad").value;
-        var fechaAlta = moment(Date.now()).format('L'); ;
+        var fechaAlta = moment(Date.now()).format('L');;
         var fechaVencimiento = document.getElementById("dtpFechaVencimiento").value;
         var idRubro = document.getElementById("cboIdRubro").value;
         var categoria = document.getElementById("txtCategoria").value;
@@ -467,12 +467,15 @@ function agregarEditar() {
 
                         mostrarTabla();
 
-                        alert("Exitoso");
+                        if (idProducto == 0)
+                            alert("Agregado Exitosamente");
+                        else
+                            alert("Editado Exitosamente");
 
                         document.getElementById("btnCancelar").click();
 
                     } else {
-                        alert("Error");
+                        alert("Error agregarEditar()");
                     }
 
                 }
@@ -491,17 +494,17 @@ function agregarEditar() {
 
 function eliminar(id) {
 
-
+    
     var frm = new FormData();
 
-    frm.append("IIDCURSO", id);
+    frm.append("IdProducto", id);
 
 
     if (confirm("¿Seguro que quiere eliminar el registro??") == 1) {
 
         $.ajax({
             type: "POST",
-            url: "/Curso/Eliminar/",
+            url: "/Producto/Eliminar/",
             data: frm,
             contentType: false,
             processData: false,
@@ -510,7 +513,43 @@ function eliminar(id) {
 
                     mostrarTabla();
 
-                    // alert("Exitoso");
+                  alert("Registro eliminado!");
+
+                    document.getElementById("btnCancelar").click();
+                } else {
+                    alert("Error eliminar(id)");
+                }
+
+            }
+
+        })
+
+    } //fin confirmacion
+}
+
+
+function inactivar(id) {
+
+
+    var frm = new FormData();
+
+    frm.append("IdProducto", id);
+
+
+    if (confirm("¿Seguro que quiere inactivar el registro??") == 1) {
+
+        $.ajax({
+            type: "POST",
+            url: "/Producto/Inactivar/",
+            data: frm,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data != 0) {
+
+                    mostrarTabla();
+
+                    alert("Registro Inactivo!");
 
                     document.getElementById("btnCancelar").click();
                 } else {
